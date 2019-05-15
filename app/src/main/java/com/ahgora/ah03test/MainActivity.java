@@ -4,9 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
-import java.util.HashMap;
-
 import com.ahgora.ah03.Api;
+import com.ahgora.ah03.Response;
+import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,21 +19,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void test() {
-        HashMap<String, String> cadastroFuncionario = Api.cadastroFuncionario("matricula","codEmpresa");
+        Gson gson = new Gson();
 
-        Log.d("Ah03 Api", cadastroFuncionario.get("error"));
-        Log.d("Ah03 Api", cadastroFuncionario.get("matricula"));
-        Log.d("Ah03 Api", cadastroFuncionario.get("res"));
+        String cadastroFuncionario = Api.cadastroFuncionario("0606060606");
+        Response cadastroFuncionarioResponse = gson.fromJson(cadastroFuncionario, Response.class);
+        Log.d("Ah03 Api => cadastroFuncionarioResponse Error:", Boolean.toString(cadastroFuncionarioResponse.getError()));
+        Log.d("Ah03 Api => cadastroFuncionarioResponse Matricula:", cadastroFuncionarioResponse.getMatricula());
+        Log.d("Ah03 Api => cadastroFuncionarioResponse Biometria:", cadastroFuncionarioResponse.getBio());
 
-        HashMap<String, String> batidaFuncionario = Api.batidaFuncionario();
+        String batidaFuncionario = Api.batidaFuncionario();
+        Response batidaFuncionarioResponse = gson.fromJson(batidaFuncionario, Response.class);
+        Log.d("Ah03 Api => batidaFuncionarioResponse Error:", Boolean.toString(batidaFuncionarioResponse.getError()));
+        Log.d("Ah03 Api => batidaFuncionarioResponse Matricula:", batidaFuncionarioResponse.getMatricula());
 
-        Log.d("Ah03 Api", batidaFuncionario.get("error"));
-        Log.d("Ah03 Api", batidaFuncionario.get("matricula"));
-        Log.d("Ah03 Api", batidaFuncionario.get("res"));
-
-        HashMap<String, String> cargaDados = Api.cargaDados();
-
-        Log.d("Ah03 Api", cargaDados.get("error"));
+        String configura = Api.configura("0606060606", "hash da biometria");
+        Response configuraResponse = gson.fromJson(configura, Response.class);
+        Log.d("Ah03 Api => configuraResponse Error:", Boolean.toString(configuraResponse.getError()));
     }
 }
 
